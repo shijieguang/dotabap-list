@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_XINX" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <XINX>
+    <DD12V>
+     <SQLTAB>QMEL</SQLTAB>
+     <INDEXNAME>ZAW</INDEXNAME>
+     <AS4LOCAL>A</AS4LOCAL>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DBINDEX>QMEL~ZAW</DBINDEX>
+     <DDTEXT>CS AWB Index</DDTEXT>
+     <ISEXTIND>X</ISEXTIND>
+    </DD12V>
+    <T_DD17V>
+     <DD17V>
+      <SQLTAB>QMEL</SQLTAB>
+      <INDEXNAME>ZAW</INDEXNAME>
+      <POSITION>0001</POSITION>
+      <AS4LOCAL>A</AS4LOCAL>
+      <FIELDNAME>ZZAWB</FIELDNAME>
+     </DD17V>
+    </T_DD17V>
+   </XINX>
+  </asx:values>
+ </asx:abap>
+</abapGit>

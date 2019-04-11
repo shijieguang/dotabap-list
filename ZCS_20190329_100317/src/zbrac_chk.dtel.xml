@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZBRAC_CHK</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DOMNAME>FLAG</DOMNAME>
+    <HEADLEN>40</HEADLEN>
+    <SCRLEN1>10</SCRLEN1>
+    <SCRLEN2>20</SCRLEN2>
+    <SCRLEN3>30</SCRLEN3>
+    <DDTEXT>Bracelet check</DDTEXT>
+    <REPTEXT>Bracelet check</REPTEXT>
+    <SCRTEXT_S>Bracelet</SCRTEXT_S>
+    <SCRTEXT_M>Bracelet check</SCRTEXT_M>
+    <SCRTEXT_L>Bracelet check</SCRTEXT_L>
+    <DTELMASTER>E</DTELMASTER>
+    <REFKIND>D</REFKIND>
+   </DD04V>
+   <I18N_LANGS>
+    <LANGU>1</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>1</DDLANGUAGE>
+     <DDTEXT>表带</DDTEXT>
+     <REPTEXT>表带</REPTEXT>
+     <SCRTEXT_S>表带</SCRTEXT_S>
+     <SCRTEXT_M>表带</SCRTEXT_M>
+     <SCRTEXT_L>表带</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

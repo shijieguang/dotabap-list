@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_ENHO" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <TOOL>HOOK_IMPL</TOOL>
+   <SHORTTEXT>Change Pointer Reduce for WP_PLU</SHORTTEXT>
+   <ORIGINAL_OBJECT>
+    <PGMID>R3TR</PGMID>
+    <ORG_OBJ_TYPE>CLAS</ORG_OBJ_TYPE>
+    <ORG_OBJ_NAME>CL_IM_DELIST_STRUCT_ART</ORG_OBJ_NAME>
+    <ORG_MAIN_TYPE>CLAS</ORG_MAIN_TYPE>
+    <ORG_MAIN_NAME>CL_IM_DELIST_STRUCT_ART</ORG_MAIN_NAME>
+    <PROGRAMNAME>CL_IM_DELIST_STRUCT_ART=======CP</PROGRAMNAME>
+   </ORIGINAL_OBJECT>
+   <ENHANCEMENTS>
+    <ENH_HOOK_IMPL>
+     <PROGRAMNAME>CL_IM_DELIST_STRUCT_ART=======CP</PROGRAMNAME>
+     <EXTID>1</EXTID>
+     <ID>1</ID>
+     <ENHMODE>D</ENHMODE>
+     <FULL_NAME>\TY:CL_IM_DELIST_STRUCT_ART\IN:IF_EX_BDCP_BEFORE_WRITE\ME:FILTER_BDCPV_BEFORE_WRITE\SE:END\EI</FULL_NAME>
+     <SOURCE>
+      <item>* For message type WP_PLU, now using change pointer to download delta article master is only</item>
+      <item>* for CS business(spare parts in sales org 4850, distribution channel 90 and site 4850). So</item>
+      <item>* before saving, we need to delete change pointers which is not related with CS business(spare parts) .</item>
+      <item>IF flt_val = &apos;WP_PLU&apos;.</item>
+      <item>DATA: lt_bdcp TYPE bdi_bdcpvt,</item>
+      <item>ls_bdcp LIKE LINE OF lt_bdcp,</item>
+      <item>lt_bdcp_sp TYPE bdi_bdcpvt ,</item>
+      <item>ls_bdcp_sp LIKE LINE OF lt_bdcp_sp,</item>
+      <item>lv_matnr TYPE matnr,</item>
+      <item>ls_konh TYPE konh,</item>
+      <item>ls_a004 TYPE a004,</item>
+      <item>lv_vakey TYPE konh-vadat .</item>
+      <item>*    WHILE sy-uname = &apos;CN-HUROB&apos;.</item>
+      <item>*      BREAK-POINT .</item>
+      <item>*    ENDWHILE.</item>
+      <item>REFRESH: lt_bdcp, lt_bdcp_sp .</item>
+      <item>READ TABLE change_pointers TRANSPORTING NO FIELDS WITH KEY mestype = flt_val .</item>
+      <item>IF sy-subrc = 0 .</item>
+      <item>&quot; Copy records of object class COND_A to lt_bdcp_cond_a, copy records of object class MAT_FULL to lt_bdcp_mat_full,</item>
+      <item>&quot; and delete them from change_pointers</item>
+      <item>lt_bdcp[] = change_pointers[] .</item>
+      <item>DELETE lt_bdcp WHERE mestype &lt;&gt; flt_val .</item>
+      <item>DELETE change_pointers WHERE mestype = flt_val .</item>
+      <item>LOOP AT lt_bdcp INTO ls_bdcp.</item>
+      <item>CLEAR: lv_matnr .</item>
+      <item>CASE ls_bdcp-tabname.</item>
+      <item>WHEN &apos;MARA&apos; OR &apos;DMAKT&apos; OR &apos;DMARM&apos;.</item>
+      <item>SELECT SINGLE matnr</item>
+      <item>INTO lv_matnr</item>
+      <item>FROM mara</item>
+      <item>WHERE matnr = ls_bdcp-cdobjid</item>
+      <item>AND matkl = &apos;SERVICE&apos; . &quot; Merchandise category SERVICE is for spare parts</item>
+      <item>WHEN &apos;DMARC&apos;.</item>
+      <item>IF ls_bdcp-tabkey = &apos;4850&apos;.</item>
+      <item>lv_matnr = ls_bdcp-cdobjid .</item>
+      <item>ENDIF.</item>
+      <item>WHEN &apos;DMVKE&apos; .</item>
+      <item>IF ls_bdcp-tabkey = &apos;485190&apos;.</item>
+      <item>lv_matnr = ls_bdcp-cdobjid .</item>
+      <item>ENDIF.</item>
+      <item>WHEN &apos;DWLK2&apos;.</item>
+      <item>IF ls_bdcp-tabkey+0(6) = &apos;4585190&apos;.</item>
+      <item>lv_matnr = ls_bdcp-cdobjid .</item>
+      <item>ENDIF.</item>
+      <item>WHEN &apos;WLK1&apos; .</item>
+      <item>IF ls_bdcp-tabkey+3(10) = &apos;0000004850&apos;.</item>
+      <item>lv_matnr = ls_bdcp-tabkey+13(18) .</item>
+      <item>ENDIF.</item>
+      <item>WHEN &apos;KONDAT&apos; .</item>
+      <item>IF ls_bdcp-cdobjcl = &apos;COND_A&apos;.</item>
+      <item>SELECT SINGLE *</item>
+      <item>INTO CORRESPONDING FIELDS OF ls_konh</item>
+      <item>FROM konh</item>
+      <item>WHERE knumh = ls_bdcp-cdobjid</item>
+      <item>AND kvewe = &apos;A&apos;</item>
+      <item>AND kotabnr = &apos;004&apos;</item>
+      <item>AND kappl = &apos;V&apos;</item>
+      <item>AND kschl = &apos;ZPP0&apos; .</item>
+      <item>IF sy-subrc = 0 .</item>
+      <item>CONCATENATE sy-mandt ls_konh-kappl ls_konh-kschl ls_konh-vakey</item>
+      <item>INTO lv_vakey RESPECTING BLANKS .</item>
+      <item>ls_a004 = lv_vakey .</item>
+      <item>IF ls_a004-vkorg = &apos;4851&apos; AND ls_a004-vtweg = &apos;90&apos; .</item>
+      <item>lv_matnr = ls_a004-matnr .</item>
+      <item>ENDIF.</item>
+      <item>ENDIF.</item>
+      <item>ENDIF.</item>
+      <item>WHEN OTHERS.</item>
+      <item>ENDCASE.</item>
+      <item>IF lv_matnr &lt;&gt; &apos;&apos; .</item>
+      <item>READ TABLE lt_bdcp_sp INTO ls_bdcp_sp WITH KEY cdobjid = lv_matnr .</item>
+      <item>IF sy-subrc &lt;&gt; 0 .</item>
+      <item>ls_bdcp_sp = ls_bdcp .</item>
+      <item>ls_bdcp_sp-tabname = &apos;DMARC&apos; .</item>
+      <item>ls_bdcp_sp-tabkey = &apos;4850&apos; .</item>
+      <item>ls_bdcp_sp-fldname = &apos;KEY&apos; .</item>
+      <item>ls_bdcp_sp-cdobjcl = &apos;MAT_FULL&apos; .</item>
+      <item>ls_bdcp_sp-cdobjid = lv_matnr .</item>
+      <item>APPEND ls_bdcp_sp TO lt_bdcp_sp .</item>
+      <item>ENDIF.</item>
+      <item>ENDIF.</item>
+      <item>ENDLOOP.</item>
+      <item>APPEND LINES OF lt_bdcp_sp TO change_pointers .</item>
+      <item>ENDIF.</item>
+      <item>ENDIF.</item>
+     </SOURCE>
+    </ENH_HOOK_IMPL>
+   </ENHANCEMENTS>
+   <SPACES>
+    <item>
+     <FULL_NAME>\TY:CL_IM_DELIST_STRUCT_ART\IN:IF_EX_BDCP_BEFORE_WRITE\ME:FILTER_BDCPV_BEFORE_WRITE\SE:END\EI</FULL_NAME>
+     <SPACES>
+      <item>0</item>
+      <item>0</item>
+      <item>0</item>
+      <item>2</item>
+      <item>4</item>
+      <item>10</item>
+      <item>10</item>
+      <item>10</item>
+      <item>10</item>
+      <item>10</item>
+      <item>10</item>
+      <item>10</item>
+      <item>0</item>
+      <item>0</item>
+      <item>0</item>
+      <item>4</item>
+      <item>4</item>
+      <item>4</item>
+      <item>6</item>
+      <item>6</item>
+      <item>6</item>
+      <item>6</item>
+      <item>6</item>
+      <item>6</item>
+      <item>8</item>
+      <item>8</item>
+      <item>10</item>
+      <item>12</item>
+      <item>14</item>
+      <item>14</item>
+      <item>14</item>
+      <item>16</item>
+      <item>10</item>
+      <item>12</item>
+      <item>14</item>
+      <item>12</item>
+      <item>10</item>
+      <item>12</item>
+      <item>14</item>
+      <item>12</item>
+      <item>10</item>
+      <item>12</item>
+      <item>14</item>
+      <item>12</item>
+      <item>10</item>
+      <item>12</item>
+      <item>14</item>
+      <item>12</item>
+      <item>10</item>
+      <item>12</item>
+      <item>14</item>
+      <item>16</item>
+      <item>16</item>
+      <item>16</item>
+      <item>18</item>
+      <item>18</item>
+      <item>18</item>
+      <item>18</item>
+      <item>14</item>
+      <item>16</item>
+      <item>28</item>
+      <item>16</item>
+      <item>16</item>
+      <item>18</item>
+      <item>16</item>
+      <item>14</item>
+      <item>12</item>
+      <item>10</item>
+      <item>8</item>
+      <item>8</item>
+      <item>10</item>
+      <item>10</item>
+      <item>12</item>
+      <item>12</item>
+      <item>12</item>
+      <item>12</item>
+      <item>12</item>
+      <item>12</item>
+      <item>12</item>
+      <item>10</item>
+      <item>8</item>
+      <item>6</item>
+      <item>6</item>
+      <item>4</item>
+      <item>2</item>
+     </SPACES>
+    </item>
+   </SPACES>
+  </asx:values>
+ </asx:abap>
+</abapGit>

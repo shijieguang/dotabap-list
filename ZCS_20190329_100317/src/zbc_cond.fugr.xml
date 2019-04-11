@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>Cond. value calc. by fixed point arithme</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZBC_CONDTOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZBC_COND</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>ZBC_COND_XKWERT</FUNCNAME>
+     <SHORT_TEXT>Calculate xkwert in fixed point arithmetic</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IV_KBETR</PARAMETER>
+       <TYP>KBETR</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_KAWRT</PARAMETER>
+       <TYP>KAWRT</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_KPEIN</PARAMETER>
+       <TYP>KPEIN</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_KRECH</PARAMETER>
+       <TYP>KRECH</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_KSCHL</PARAMETER>
+       <TYP>KSCHL</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>EV_XKWERT</PARAMETER>
+       <TYP>KWERT</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IV_KBETR</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Rate (condition amount or percentage)</STEXT>
+       <INDEX> 001</INDEX>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_KAWRT</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Condition base value</STEXT>
+       <INDEX> 002</INDEX>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_KPEIN</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Condition pricing unit</STEXT>
+       <INDEX> 003</INDEX>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_KRECH</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Calculation type for condition</STEXT>
+       <INDEX> 004</INDEX>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_KSCHL</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Condition Type</STEXT>
+       <INDEX> 005</INDEX>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>EV_XKWERT</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Condition value</STEXT>
+       <INDEX> 006</INDEX>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
